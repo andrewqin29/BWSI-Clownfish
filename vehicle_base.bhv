@@ -1,0 +1,175 @@
+//---------------------------------------------------
+// Helm Behavior file 
+
+initialize   DEPLOY  = false
+initialize   RETURN  = false
+initialize   LOITER  = false
+initialize DEPLOY1 = false
+initialize DEPLOY2 = false
+initialize DEPLOY3 = false
+
+set MODE = ACTIVE {
+  DEPLOY = true
+} INACTIVE
+
+set MODE = RETURNING {
+  MODE = ACTIVE
+  RETURN = true
+} 
+
+set MODE = LOITERING {
+  MODE = ACTIVE
+  LOITER = true
+} 
+
+set MODE = WAYPOINT_1 {
+	MODE = ACTIVE
+	RETURN = false
+	DEPLOY1 = true
+}
+
+set MODE = WAYPOINT_2 {
+	MODE = ACTIVE
+	RETURN = false
+	DEPLOY2 = true
+}
+
+set MODE = WAYPOINT_3 {
+	MODE = ACTIVE
+	RETURN = false
+	DEPLOY3 = true
+}
+
+//----------------------------------------------
+Behavior = BHV_AvdColregsV19
+{
+  name       = avdcol_
+  pwt        = 150
+  condition  = CLOSE = true 
+  condition  = MODE==ACTIVE
+  updates    = CONTACT_INFO
+  templating = spawn
+
+
+             contact = to-be-set
+    on_no_contact_ok = true
+         extrapolate = true
+               decay = 30,60
+
+	       match_group = alpha
+        //  match_type = mokai
+
+	exit_on_filter_group = true
+	
+	post_per_contact_info = true
+	
+        use_refinery = true
+
+        pwt_outer_dist = 5
+        pwt_inner_dist = 0
+        completed_dist = 25
+     min_util_cpa_dist = 3
+     max_util_cpa_dist = 6
+             pwt_grade = linear
+   bearing_line_config = white:0, green:0.65, yellow:0.8, red:1.0
+}
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+	name = watch_3
+	pwt = 100
+	condition = MODE==WAYPOINT_3
+	
+	lead = 8
+	lead_damper = 1
+	lead_to_start = true
+	speed = 8
+	capture_line = true
+	capture_radius = 3.0
+	slip_radius = 5.0
+	efficiency_measure = all
+	repeat = forever
+	
+	points = format=radial, label=waypoint, $(LINE3), pts=8, snap=1
+	order = normal
+	
+	visual_hints = nextpt_color=yellow
+	visual_hints = nextpt_vertex_size=8
+	visual_hints = nextpt_lcolor=gray70
+	visual_hints = vertex_color=dodger_blue, edge_color=white
+	visual_hints = vertex_size=5, edge_size=1
+}
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+	name = watch_2
+	pwt = 100
+	condition = MODE==WAYPOINT_2
+	
+	lead = 8
+	lead_damper = 1
+	lead_to_start = true
+	speed = 8
+	capture_line = true
+	capture_radius = 3.0
+	slip_radius = 5.0
+	efficiency_measure = all
+	repeat = forever
+	
+	points = format=radial, label=waypoint, $(LINE2), pts=8, snap=1
+	order = normal
+	
+	visual_hints = nextpt_color=yellow
+	visual_hints = nextpt_vertex_size=8
+	visual_hints = nextpt_lcolor=gray70
+	visual_hints = vertex_color=dodger_blue, edge_color=white
+	visual_hints = vertex_size=5, edge_size=1
+}
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+	name = watch_1
+	pwt = 100
+	condition = MODE==WAYPOINT_1
+	perpetual = true
+	
+	lead = 8
+	lead_damper = 1
+	lead_to_start = true
+	speed = 8
+	capture_line = true
+	capture_radius = 3.0
+	slip_radius = 5.0
+	efficiency_measure = all
+	repeat = forever
+	
+	points = format=radial, label=waypoint, $(LINE1), pts=8, snap=1
+	order = normal
+	
+	visual_hints = nextpt_color=yellow
+	visual_hints = nextpt_vertex_size=8
+	visual_hints = nextpt_lcolor=gray70
+	visual_hints = vertex_color=dodger_blue, edge_color=white
+	visual_hints = vertex_size=5, edge_size=1
+}
+
+//----------------------------------------------
+Behavior = BHV_ConstantDepth
+{
+
+	// General
+	//-----------------------------
+	name = survey_depth
+	pwt = 100
+	condition = MODE==ACTIVE
+	updates = DEPTH_UPDATES
+
+	// Parameters specific to this behavior
+   	// ------------------------------------
+                depth = 100            // default
+   depth_mismatch_var = DEPTH_DIFF   // example
+             duration = no-time-limit            // default
+}
