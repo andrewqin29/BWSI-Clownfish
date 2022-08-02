@@ -54,7 +54,7 @@ ProcessConfig = pHelmIvP
   Behaviors    = targ_$(AUV_NAME).bhv  
   Verbose      = false
   Domain       = course:0:359:360
-  Domain       = speed:0:5:26
+  Domain       = speed:0:20:26
   Domain       = depth:0:1000:301
 
 	hold_on_apps = pContactMgrV20
