@@ -144,19 +144,21 @@ bool Challenge::Iterate()
   // loop through our contact list and decide what to do
   for (std::map<std::string, std::string> contact : _contactList) {
     double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
-    std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    
+    // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
+    std::cout << "Max: " << _maxChaseDist << std::endl;
+    std::cout << "Min: " << _minChaseDist << std::endl;
+
     if (distance < _minChaseDist) {
       // picked up target, don't need to chase again
       _contactsCollected.push_back(contact);
     }
 
-    // if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
-    //   // call off the chase
-    //   Notify("CLOSE", "false");
-    //   Notify("LOITER1", "true");
-    // }
-    if (distance < _maxChaseDist) {
+    if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
+      // call off the chase
+      Notify("CLOSE", "false");
+      Notify("LOITER1", "true");
+    }
+    else if (distance < _maxChaseDist) {
       std::cout << "Hi" << std::endl;
 
       // check if this is a contact we have already pursued

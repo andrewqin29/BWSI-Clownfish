@@ -157,4 +157,5 @@ ProcessConfig = uFldNodeBroker
 #include vehicle_moos_plugs/plug_uProcessWatch.moos
 #include vehicle_moos_plugs/plug_uLoadWatch.moos
 #include vehicle_moos_plugs/plug_iSay.moos
+#include moos_plugs/plug_pChallenge.moos
 
