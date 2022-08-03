@@ -110,7 +110,7 @@ for i in ${!VEHICLES[@]}; do
                 SHOREIP="${SHOREIP}" \
                 SHORESIDE_PORT=9000 \
                 SHORESIDE_PSHARE=9200
-        pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& ${VEHICLES[$i]}.txt &
+        pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
 done
 
 echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
