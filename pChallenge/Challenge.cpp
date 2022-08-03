@@ -159,7 +159,6 @@ bool Challenge::Iterate()
       Notify("LOITER1", "true");
     }
     else if (distance < _maxChaseDist) {
-      std::cout << "Hi" << std::endl;
 
       // check if this is a contact we have already pursued
       bool isCollected = false;
@@ -178,6 +177,8 @@ bool Challenge::Iterate()
         if (contact["TYPE"] == "whale") {
           Notify("CHASE_UPDATES", message.str());
           Notify("CLOSE", "true");
+          Notify("LOITER1", "false");
+          Notify("LOITER2", "false");
         }
       }
     }

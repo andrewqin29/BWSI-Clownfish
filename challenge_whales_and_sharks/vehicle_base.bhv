@@ -24,17 +24,20 @@ set MODE = RETURNING {
 set MODE = LOITERING1 {
   MODE = ACTIVE
   LOITER1 = true
+  CLOSE = false
 }
 
 set MODE = LOITERING2 {
   MODE = ACTIVE
   LOITER2 = true
+  CLOSE = false
 }
 
 set MODE = CHASING {
-        MODE = ACTIVE
-        LOITER = false
-        CLOSE = true
+  MODE = ACTIVE
+  CLOSE = true
+  LOITER1 = false
+  LOITER2 = false
 }
 
 Behavior = BHV_Waypoint
