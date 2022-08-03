@@ -24,6 +24,20 @@ Processconfig = ANTLER
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
+  Run = pChallenge_shoreside @ NewConsole = false
+}
+
+ProcessConfig = pChallenge_shoreside
+{
+	AppTick = 1
+	CommsTick = 1
+
+	whale_score = 50
+	fish_score = 100
+	pickup_score = 200
+	collect_score = 500
+	bite_timeout = 120
+
 }
 
 //---------------------------------------------------------
@@ -117,7 +131,7 @@ ProcessConfig = pHostInfo
   AppTick    = 1
   CommsTick  = 1
 
-  default_hostip_force = 10.116.0.2
+  default_hostip_force = $(SHOREIP)
 }
 
 //--------------------------------------------------
@@ -129,8 +143,6 @@ ProcessConfig = uXMS
   CommsTick     = 1
 
   var = APPCAST_REQ_ALL, DEPLOY_ALL, RETURN_ALL, STATION_KEEP_ALL
-  var = STATION_KEEP_HENRY, STATION_KEEP_GILDA
-  var = RETURN_UPDATES_HENRY, RETURN_UPDATES_GILDA
 }
 
 //--------------------------------------------------
@@ -195,26 +207,42 @@ ProcessConfig = pMarineViewer
 
   cmd = label=DEPLOY, var=DEPLOY,  sval=true,  receivers=all
   cmd = label=DEPLOY, var=MOOS_MANUAL_OVERRIDE,  sval=false,  receivers=all
-  cmd = label=DEPLOY, var=CLOSE,  sval=true,  receivers=all
+  //cmd = label=DEPLOY, var=CLOSE,  sval=true,  receivers=all
   cmd = label=DEPLOY, var=RETURN,  sval=false,  receivers=all
   cmd = label=DEPLOY, var=STATION_KEEP,  sval=false,  receivers=all
 
   cmd = label=RETURN, var=RETURN, sval=true, receivers=all
   cmd = label=RETURN, var=STATION_KEEP, sval=false, receivers=all
 
+  cmd = label=PERMUTE, var=UTS_FORWARD,  dval=0,  receivers=shore
+
   cmd = label=STATION, var=STATION_KEEP,  sval=true,  receivers=all
 
   cmd = label=STATION, var=STATION_KEEP,  sval=true,  receivers=all
+
+  cmd = label=LOITER-FAST, var=UP_LOITER,  sval=speed=2.8,  receivers=all
+  cmd = label=LOITER-SLOW, var=UP_LOITER,  sval=speed=1.4,  receivers=all
+
+  cmd = label=LOITER-CLOCKWISE-TRUE,  var=UP_LOITER, sval=clockwise=true,  receivers=all
+  cmd = label=LOITER-CLOCKWISE-FALSE, var=UP_LOITER, sval=clockwise=false, receivers=all
+  cmd = label=LOITER-CLOCKWISE-BEST, var=UP_LOITER,  sval=clockwise=false, receivers=all
 	
   button_one   = DEPLOY  # DEPLOY_ALL=true 
   button_one   = MOOS_MANUAL_OVERRIDE_ALL=false 
-  button_one   = CLOSE_ALL=true
+  //button_one   = CLOSE_ALL=true
   button_one   = RETURN_ALL=false # STATION_KEEP_ALL=false
 
   button_two   = RETURN  # RETURN_ALL=true
   button_two   = RETURN  # STATION_KEEP_ALL=false
-  button_three  = STATION:true # STATION_KEEP_ALL=true
-  button_four   = STATION:false # STATION_KEEP_ALL=false
+  button_three = PERMUTE   # UTS_FORWARD=0
+  button_five  = STATION:true # STATION_KEEP_ALL=true
+  button_six   = STATION:false # STATION_KEEP_ALL=false
+
+	button_seven = REFINE:N # CONTACT_INFO_ALL = name=avdcol # use_refinery=false
+	button_eight = REFINE:Y # CONTACT_INFO_ALL = name=avdcol # use_refinery=true
+
+	button_nine = GRP_BRAVO # NODE_GROUP_UPDATE_HENRY = bravo
+
 }
 
 //--------------------------------------------------------

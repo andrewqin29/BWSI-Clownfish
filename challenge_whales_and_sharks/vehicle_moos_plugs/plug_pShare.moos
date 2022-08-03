@@ -1,0 +1,11 @@
+//---------------------------------------------------------
+// pShare Config Block  (Created from Plugin)
+
+ProcessConfig = pShare
+{
+  AppTick    = 1
+  CommsTick  = 1
+
+  input = route =  localhost:$(AUV_PSHARE)
+}
+

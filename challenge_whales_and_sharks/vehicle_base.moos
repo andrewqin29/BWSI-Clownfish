@@ -148,30 +148,13 @@ ProcessConfig = uFldNodeBroker
   bridge = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE
 }
 
-//------------------------------------------------------
-// uSimMarine Configuration Block
-
-ProcessConfig = uSimMarine
-{
-  AppTick   = 10
-  CommsTick = 10
-
-  START_POS = $(START_POS)
-  PREFIX    = NAV
-
-  //rotate_speed = 0.012
-  //drift_x      = 0.0045
-
-  thrust_map = 0:0, 100:$(MAX_SPEED)
-  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
-}
-
-#include moos_plugs/plug_uMemWatch.moos
-#include moos_plugs/plug_pShare.moos
-#include moos_plugs/plug_pHostInfo.moos
-#include moos_plugs/plug_pMarinePID.moos
-#include moos_plugs/plug_pLogger.moos
-#include moos_plugs/plug_uProcessWatch.moos
-#include moos_plugs/plug_uLoadWatch.moos
-#include moos_plugs/plug_iSay.moos
+#include vehicle_moos_plugs/plug_uMemWatch.moos
+#include vehicle_moos_plugs/plug_pShare.moos
+#include vehicle_moos_plugs/plug_pHostInfo.moos
+#include vehicle_moos_plugs/plug_uSimMarine.moos
+#include vehicle_moos_plugs/plug_pMarinePID.moos
+#include vehicle_moos_plugs/plug_pLogger.moos
+#include vehicle_moos_plugs/plug_uProcessWatch.moos
+#include vehicle_moos_plugs/plug_uLoadWatch.moos
+#include vehicle_moos_plugs/plug_iSay.moos
 

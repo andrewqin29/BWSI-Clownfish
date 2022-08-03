@@ -1,12 +1,14 @@
 //------------------------------------------------
-// pChallenge config block
+// pChallenge_whale config block
 
-ProcessConfig = pChallenge
+ProcessConfig = pChallenge_whale
 {
    AppTick   = 4
    CommsTick = 4
 
-   min_chase_distance = 0
    max_chase_distance = 100
+   min_chase_distance = 5
+
+   name = $(AUV_NAME)
 }
 

@@ -59,7 +59,6 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
 
     if (key.compare("NAV_X")==0) {
       _navX = msg.GetDouble();
-      std::cout << "NAV_X = " << _navX << std::endl;
     }
     else if (key.compare("NAV_Y")==0) {
       _navY = msg.GetDouble();
@@ -75,7 +74,6 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
-      // std::cout << "NODE_REPORT = " << _nodeReports.front() << std::endl;
     }
     else {
       std::cerr << "Unknown message type: " << key << std::endl;
@@ -153,12 +151,13 @@ bool Challenge::Iterate()
       _contactsCollected.push_back(contact);
     }
 
-    if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
-      // call off the chase
-      Notify("CLOSE", "false");
-      Notify("LOITER", "true");
-    }
-    else if (distance < _maxChaseDist) {
+    // if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
+    //   // call off the chase
+    //   Notify("CLOSE", "false");
+    //   Notify("LOITER1", "true");
+    // }
+    if (distance < _maxChaseDist) {
+      std::cout << "Hi" << std::endl;
 
       // check if this is a contact we have already pursued
       bool isCollected = false;
@@ -171,13 +170,12 @@ bool Challenge::Iterate()
 
       if (!isCollected) {
         // start the chase
-        //std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
+        std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
         std::ostringstream message;
         message << "contact = " << contact["NAME"];
         if (contact["TYPE"] == "whale") {
           Notify("CHASE_UPDATES", message.str());
           Notify("CLOSE", "true");
-          Notify("LOITER", "false");
         }
       }
     }
