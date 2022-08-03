@@ -16,14 +16,33 @@ V5="clownfish5"
 V6="clownfish6"
 V7="clownfish7"
 HOSTIP=`hostname -I | awk '{print $3}'`
-SHOREIP=10.116.0.2
+#SHOREIP=10.116.0.2
+SHOREIP=$HOSTIP
 VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
-TYPES=("AUV" "AUV" "AUV" "kayak" "kayak" "kayak")
+TYPES=("AUV" "AUV" "AUV" "AUV" "kayak" "kayak")
 AUV_PORTS=("9001" "9002" "9003" "9004" "9005" "9006")
 AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
 
-START_POS=("x=-3000,y=-3000,speed=0,heading=0,depth=0" "x=-2000,y=-3000,speed=0,heading=0,depth=0"  "x=-1000,y=-3000,speed=0,heading=0,depth=0" "x=0,y=-3000,speed=0,heading=0,depth=0" "x=1000,y=-3000,speed=0,heading=0,depth=0" "x=2000,y=-3000,speed=0,heading=0,depth=0")
-BLOCK_POS=("startx=-3000,starty=-3000,x=-2500,y=0" "startx=-2000,starty=-3000,x=-1500,y=0" "startx=-1000,starty=-3000,x=-500,y=0" "startx=0,starty=-3000,x=500,y=0" "startx=1000,starty=-3000,x=1500,y=0" "startx=2000,starty=-3000,x=2500,y=0")
+START_POS=("x=1500,y=1500,speed=0,heading=0,depth=0" \
+"x=-1500,y=1500,speed=0,heading=0,depth=0"  \
+"x=-1500,y=-1500,speed=0,heading=0,depth=0" \
+"x=1500,y=-1500,speed=0,heading=0,depth=0" \
+"x=1500,y=750,speed=0,heading=0,depth=0" \
+"x=-1500,y=750,speed=0,heading=0,depth=0")
+
+BLOCK_POS1=("startx=1400,starty=1400,x=800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=-1400,starty=1400,x=-800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=-1400,starty=-1400,x=-800,y=-1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=1400,starty=-1400,x=800,y=-1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=1400,starty=650,x=800,y=0,height=1300,width=1200,lane_width=400,rows=north-south" \
+"startx=-1400,starty=650,x=-800,y=0,height=1300,width=1200,lane_width=400,rows=north-south")
+
+BLOCK_POS2=("startx=0,starty=1400,x=600,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=0,starty=1400,x=-600,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=0,starty=-1400,x=-600,y=-1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=0,starty=-1400,x=600,y=-1125,height=550,width=1200,lane_width=400,rows=north-south" \
+"startx=0,starty=650,x=600,y=0,height=1300,width=1200,lane_width=400,rows=north-south" \
+"startx=0,starty=650,x=-600,y=0,height=1300,width=1200,lane_width=400,rows=north-south")
 
 #----------------------------------------------------------
 #  Part 2: Check for and handle command-line arguments
@@ -74,7 +93,8 @@ for i in ${!VEHICLES[@]}; do
                 AUV_PSHARE=${AUV_PSHARE[$i]} \
                 AUV_TYPE=${TYPES[$i]} \
                 START_POS=${START_POS[$i]} \
-                BLOCK_POS=${BLOCK_POS[$i]} \
+                BLOCK_POS1=${BLOCK_POS1[$i]} \
+                BLOCK_POS2=${BLOCK_POS2[$i]} \
                 WARP=${TIME_WARP} \
                 SHORESIDE_PORT=9000
         nsplug  vehicle_base.moos targ_${VEHICLES[$i]}.moos \

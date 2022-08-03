@@ -3,7 +3,8 @@
 initialize   DEPLOY  = false
 initialize   RETURN  = false
 initialize   STATION_KEEP = false
-initialize   LOITER  = true
+initialize   LOITER1  = true
+initialize   LOITER2 = false
 initialize   CLOSE   = true
 
 set MODE = ACTIVE {
@@ -20,9 +21,14 @@ set MODE = RETURNING {
   RETURN = true
 }
 
-set MODE = LOITERING {
+set MODE = LOITERING1 {
   MODE = ACTIVE
-  LOITER = true
+  LOITER1 = true
+}
+
+set MODE = LOITERING2 {
+  MODE = ACTIVE
+  LOITER2 = true
 }
 
 set MODE = CHASING {
@@ -35,10 +41,13 @@ Behavior = BHV_Waypoint
  {
    // General Behavior Parameters
    // ---------------------------
-   name         = transit               // example
+   name         = transit1               // example
    pwt          = 100                   // default
-   condition    = MODE==LOITERING      // example
+   condition    = MODE==LOITERING1      // example
    updates      = TRANSIT_UPDATES       // example
+   endflag      = LOITER1 = false
+   endflag      = LOITER2 = true
+   perpetual    = true
 
    // Parameters specific to this behavior
    // ------------------------------------
@@ -48,7 +57,42 @@ Behavior = BHV_Waypoint
        lead_to_start = false                   // default
                order = normal                  // default
          post_suffix = HENRY                   // example
-              points = format=lawnmower, label=foxtrot, height=5800, width=800, lane_width=200, rows=east-west, $(BLOCK_POS)
+              points = format=lawnmower, label=foxtrot, $(BLOCK_POS1)
+              repeat = 0                       // default
+         slip_radius = 15                      // default
+               speed = 15                     // default is zero
+
+        visual_hints = vertex_size  = 3             // default
+        visual_hints = edge_size    = 1             // default
+        visual_hints = vertex_color = dodger_blue   // default
+        visual_hints = edge_color   = white         // default
+        visual_hints = nextpt_color = yellow        // default
+        visual_hints = nextpt_lcolor = aqua         // default
+        visual_hints = nextpt_vertex_size = 5       // default
+ }
+
+
+Behavior = BHV_Waypoint
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = transit2               // example
+   pwt          = 100                   // default
+   condition    = MODE==LOITERING2      // example
+   updates      = TRANSIT_UPDATES       // example
+   endflag      = LOITER2 = false
+   endflag      = LOITER1 = true
+   perpetual    = true
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+      capture_radius = 3                       // default
+        capture_line = false                   // default
+                lead = -1                      // default
+       lead_to_start = false                   // default
+               order = normal                  // default
+         post_suffix = HENRY                   // example
+              points = format=lawnmower, label=foxtrot, $(BLOCK_POS2)
               repeat = 0                       // default
          slip_radius = 15                      // default
                speed = 15                     // default is zero
