@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pChallenge config block
+
+ProcessConfig = pChallenge
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

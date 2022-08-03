@@ -1,0 +1,9 @@
+make all --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/tuna/moos-bwsi/behaviors/pChallenge'
+rm -f *.o
+rm -f /home/tuna/moos-bwsi/behaviors/bin/pChallenge
+g++ -Wall -o pChallenge Challenge.cpp Challenge_Info.cpp main.cpp -I/home/tuna/moos-ivp/include/ivp/ -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/ -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/Utils/include -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/Comms/include -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/Thirdparty/getpot/include/ -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/Thirdparty/PocoBits/include -I/home/tuna/moos-ivp/MOOS/MOOSCore/Core/libMOOS/App/include -L/home/tuna/moos-ivp/lib -L/home/tuna/moos-ivp/build/MOOS/MOOSCore/lib/ -lMOOS -lmbutil -lpthread -lm
+mkdir -p /home/tuna/moos-bwsi/behaviors/bin
+mv pChallenge /home/tuna/moos-bwsi/behaviors/bin
+make: Leaving directory '/home/tuna/moos-bwsi/behaviors/pChallenge'
+ 
