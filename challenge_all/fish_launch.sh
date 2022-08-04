@@ -37,7 +37,7 @@ for i in ${!VEHICLES[@]}; do
 		WARP=${TIME_WARP} \
 		BHV=${BHV[$i]} \
 		SHORESIDE_PORT=9000
-	nsplug vehicle_base.moos targ_${VEHICLES[$i]}.moos \
+	nsplug animal_base.moos targ_${VEHICLES[$i]}.moos \
 		AUV_NAME="${VEHICLES[$i]}" \
 		HOSTIP="${HOSTIP}" \
 		AUV_PORT=${AUV_PORTS[$i]} \

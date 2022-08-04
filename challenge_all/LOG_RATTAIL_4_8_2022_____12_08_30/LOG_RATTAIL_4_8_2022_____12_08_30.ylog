@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LOG FILE:       ./LOG_RATTAIL_4_8_2022_____12_08_30/LOG_RATTAIL_4_8_2022_____12_08_30.ylog
+%% FILE OPENED ON  Wed Dec 31 19:00:00 1969
+%% LOGSTART           1659629309.932494
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+0.9601321  MOOS_DEBUG           pMarinePID           ** NEW CONTROLLER GAINS ARE ** 
+0.9601421  MOOS_DEBUG           pMarinePID           YAW_PID_KP             = 0.400 
+0.960144   MOOS_DEBUG           pMarinePID           YAW_PID_KD             = 0.100 
+0.960145   MOOS_DEBUG           pMarinePID           YAW_PID_KI             = 0.000 
+0.9601471  MOOS_DEBUG           pMarinePID           YAW_PID_INTEGRAL_LIMIT = 0.070 
+0.960149   MOOS_DEBUG           pMarinePID           MAXRUDDER              = 100.000 
+0.9608011  MOOS_DEBUG           pMarinePID           SPEED_PID_KP           = 1.000 
+0.960804   MOOS_DEBUG           pMarinePID           SPEED_PID_KD           = 0.000 
+0.9608061  MOOS_DEBUG           pMarinePID           SPEED_PID_KI           = 0.000 
+0.960809   MOOS_DEBUG           pMarinePID           SPEED_PID_INTEGRAL_LIMIT = 0.070 
+0.9608111  MOOS_DEBUG           pMarinePID           MAXTHRUST              = 100.000 
+0.961617   MOOS_DEBUG           pMarinePID           Z_TO_PITCH_PID_KP      = 0.120 
+0.9616241  MOOS_DEBUG           pMarinePID           Z_TO_PITCH_PID_KD      = 0.000 
+0.9616251  MOOS_DEBUG           pMarinePID           Z_TO_PITCH_PID_KI      = 0.004 
+0.961627   MOOS_DEBUG           pMarinePID           Z_TO_PITCH_PID_KI_LIMIT= 0.050 
+0.961628   MOOS_DEBUG           pMarinePID           MAXELEVATOR            = 13.000 
+0.9625502  MOOS_DEBUG           pMarinePID           PITCH_PID_KP           = 0.500 
+0.9625571  MOOS_DEBUG           pMarinePID           PITCH_PID_KD           = 1.000 
+0.962559   MOOS_DEBUG           pMarinePID           PITCH_PID_KI           = 0.000 
+0.9625602  MOOS_DEBUG           pMarinePID           PITCH_PID_KI_LIMIT     = 0.000 
+0.9625611  MOOS_DEBUG           pMarinePID           MAXPITCH               = 0.262 
+1.356595   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: ManualOverride 
+1.356595   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: ManualOverride 
+3.463376   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+3.463376   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+3.463376   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 

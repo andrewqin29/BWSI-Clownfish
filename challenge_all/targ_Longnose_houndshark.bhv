@@ -1,0 +1,175 @@
+//---------------------------------------------------
+// Helm Behavior file 
+
+initialize   DEPLOY  = false
+initialize   RETURN  = false
+initialize   PATROL  = true
+initialize   CHASE  = false
+initialize   STKEEP  = false
+
+set MODE = ACTIVE {
+  DEPLOY = true
+} INACTIVE
+
+set MODE = SWIMMING {
+  MODE = ACTIVE
+  PATROL = true
+}                       
+
+set MODE = CHASING {
+	MODE = ACTIVE
+	CHASE = true
+}
+
+set MODE = RETURNING {
+  MODE = ACTIVE
+  RETURN = true
+} 
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+  name      = waypt_patrol
+  pwt       = 100
+  updates   = SWIM_UPDATES
+  condition = MODE==SWIMMING
+  endflag   =  = true
+  endflag   = AVOID = false
+
+      speed = 7.0
+     radius = 3.0
+  nm_radius = 15.0
+     points=format=bowtie,x=-856.62,y=-517.86,height=752,wid1=193.0,wid2=461.6,wid3=852,label=Longnose_houndshark_bwt
+     repeat = forever
+       lead = 8
+}
+
+Behavior = BHV_ConstantSpeed
+{
+   // General Behavior Parameters
+   // ---------------------------
+   name         = const_spd_transit  // example
+   pwt          = 100                // default
+   condition    = MODE==SWIMMING   // example
+   updates      = CONST_SPD_UPDATES  // example
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+            basewidth = 0.2          // default
+             duration = no-time-limit            // default
+                speed = 7.0            // default
+   speed_mismatch_var = SPEED_DIFF   // example
+            peakwidth = 0.5            // default
+          summitdelta = 0.2            // default
+}
+
+Behavior = BHV_ConstantSpeed
+{
+   // General Behavior Parameters
+   // ---------------------------
+   name         = const_spd_chase  // example
+   pwt          = 100                // default
+   condition    = MODE==CHASING   // example
+   updates      = CONST_SPD_UPDATES  // example
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+            basewidth = 0.2          // default
+             duration = no-time-limit            // default
+                speed = 18.0            // default
+   speed_mismatch_var = SPEED_DIFF   // example
+            peakwidth = 2.0            // default
+          summitdelta = 0.2            // default
+}
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+  name      = waypt_return
+  pwt       = 100
+  updates   = RETURN_UPDATES
+  condition = MODE==RETURNING
+  endflag   = STATION_KEEP = true
+  endflag   = CLOSE = false
+
+      speed = 1.3
+     radius = 3.0
+  nm_radius = 15.0
+     point =  0,0
+     repeat = 10
+       lead = 8
+}
+
+//-------------------------------------------
+Behavior = BHV_CutRange
+{
+	// General Behavior Parameters
+   	// ---------------------------
+	name         = cutrange_                         // example
+	pwt          = 5000                               // example
+	condition    = MODE==CHASING
+	updates      = CHASE_UPDATES                      // example
+	templating   = spawn
+	perpetual    = true
+
+   	// General Contact Behavior Parameters
+   	// -----------------------------------
+	bearing_lines = white:0, green:0.65, yellow:0.8, red:1.0   // example
+
+	contact = NONE            // example
+	decay = 15,30            // default (seconds)
+	extrapolate = true             // default
+
+	on_no_contact_ok = true             // default
+	time_on_leg = 60               // default (seconds)
+
+   	// Parameters specific to this behavior
+	// ------------------------------------
+	giveup_dist = 5000              // Meters. Default is 0, disabled
+	patience = 0               // [0,100]. Default 0
+	pwt_inner_dist = 0               // Meters. Default is 0.
+	pwt_outer_dist = 200              // Meters. Default is 0.
+
+	pursueflag = PURSUIT=true
+	giveupflag = PURSUIT=false
+}
+
+Behavior = BHV_ConstantDepth
+{
+   // General Behavior Parameters
+   // ---------------------------
+   name         = const_depth  // example
+   pwt          = 100                // default
+   condition    = MODE==ACTIVE   // example
+   updates      = CONST_DEPTH_UPDATES  // example
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+            basewidth = 0.2          // default
+             duration = no-time-limit            // default
+                depth = 20.0            // default
+   depth_mismatch_var = DEPTH_DIFF   // example
+            peakwidth = 0            // default
+          summitdelta = 0            // default
+}
+
+//----------------------------------------------
+Behavior = BHV_StationKeep
+{
+  name         = station-keep
+  pwt          = 100
+  condition    = MODE==STATION-KEEPING
+  inactiveflag = STATIONING = false
+  activeflag   = STATIONING = true
+
+     center_activate = true
+        inner_radius = 5
+        outer_radius = 10 
+         outer_speed = 1.0
+
+       transit_speed = 1.3
+          swing_time = 7
+        visual_hints = vertex_size=0, edge_color=gray50
+}
+
+
