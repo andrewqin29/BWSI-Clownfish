@@ -72,6 +72,10 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     else if (key.compare("NAV_SPEED")==0) {
       _navSpeed = msg.GetDouble();
     }
+    // else if (key.compare("MODE")==0) {
+    //   _mode = msg.GetString();
+    //   std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
+    // }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
     }
@@ -145,42 +149,71 @@ bool Challenge::Iterate()
   for (std::map<std::string, std::string> contact : _contactList) {
     double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
     // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    std::cout << "Max: " << _maxChaseDist << std::endl;
-    std::cout << "Min: " << _minChaseDist << std::endl;
+    // std::cout << "Contact type: " << contact["TYPE"] << std::endl;
+    // std::cout << "Max: " << _maxChaseDist << std::endl;
+    // std::cout << "Min: " << _minChaseDist << std::endl;
 
-    if (distance < _minChaseDist) {
-      // picked up target, don't need to chase again
-      _contactsCollected.push_back(contact);
-    }
-
-    if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
-      // call off the chase
-      Notify("CLOSE", "false");
-      Notify("LOITER1", "true");
-    }
-    else if (distance < _maxChaseDist) {
-
-      // check if this is a contact we have already pursued
-      bool isCollected = false;
-      for (std::map<std::string, std::string> completed : _contactsCollected) {
-        if (SameContact(contact, completed)) {
-          isCollected = true;
-          break;
-        }
+    if(contact["TYPE"] != "shark") {
+      // std::cout << "Not shark" << std::endl;
+      if (distance < _minChaseDist) {
+        // picked up target, don't need to chase again
+        _contactsCollected.push_back(contact);
+        Notify("CLOSE", "false");
+        Notify("LOITER1", "true");
       }
 
-      if (!isCollected) {
-        // start the chase
-        std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
-        std::ostringstream message;
-        message << "contact = " << contact["NAME"];
-        if (contact["TYPE"] == "whale") {
-          Notify("CHASE_UPDATES", message.str());
-          Notify("CLOSE", "true");
+      if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
+        // call off the chase
+        Notify("CLOSE", "false");
+        Notify("LOITER1", "true");
+      }
+      else if (distance < _maxChaseDist) {
+
+        // check if this is a contact we have already pursued
+        bool isCollected = false;
+        for (std::map<std::string, std::string> completed : _contactsCollected) {
+          if (SameContact(contact, completed)) {
+            isCollected = true;
+            break;
+          }
+        }
+
+        if (!isCollected) {
+          // start the chase
+          std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
+          std::ostringstream message;
+          message << "contact = " << contact["NAME"];
+          if (contact["TYPE"] == "whale") {
+            Notify("CHASE_UPDATES", message.str());
+            Notify("CLOSE", "true");
+            Notify("LOITER1", "false");
+            Notify("LOITER2", "false");
+          }
+        }
+      }
+    }
+    else {
+      std::ostringstream message;
+      message << "contact = " << contact["NAME"];
+      if (contact["MODE"] == "MODE@ACTIVE:CHASING") {
+        bool isAvoiding = false;
+
+        if (!isAvoiding) {
+          Notify("AVOID_UPDATES", message.str());
+          Notify("AVOID", "true");
           Notify("LOITER1", "false");
           Notify("LOITER2", "false");
+          isAvoiding = true;
         }
       }
+      else {
+        // shark ended chase behavior
+        // how to get previous mode the vehicle was in and then change it back
+          Notify("AVOID", "false");
+          Notify("LOITER1", "true");
+          Notify("LOITER2", "false");
+      }
+
     }
   }
   //

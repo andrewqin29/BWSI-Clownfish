@@ -17,6 +17,45 @@ START_POS=("x=312.0,y=-168.0,speed=0,depth=5,heading=160" "x=-691.0,y=807.0,spee
 BHV=("points=format=bowtie,x=319.87,y=-189.61,height=177,wid1=544.25,wid2=1141.6,wid3=2177,label=Spotted-belly_catshark_bwt" "points=zigzag:-706.96,808.12,-90,2228,481,51" "points=format=bowtie,x=-856.62,y=-517.86,height=752,wid1=193.0,wid2=461.6,wid3=852,label=Longnose_houndshark_bwt" "points=zigzag:172.01,835.33,-165,2029,289,120")
 
 #----------------------------------------------------------
+#  Part 2: Check for and handle command-line arguments
+#----------------------------------------------------------
+SHORT=h,w:
+LONG=help,nogui,warp:
+OPTS=$(getopt --options $SHORT --longoptions $LONG -- "$@")
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1; fi
+
+eval set -- "$OPTS"
+
+while true;
+do
+	case "$1" in
+		-h | --help )
+			echo "./launch.sh <OPTIONS>"
+			echo "-w <#> or --warp <#> is the warp factor"
+		echo "--nogui turns off the GUI"
+			echo "-h or --help prints this message"
+			exit 2
+			;;
+		--nogui )
+			GUI="no"
+			shift
+			;;
+		-w | --warp )
+			TIME_WARP=$2
+			shift 2
+			;;
+		-- )
+			shift;
+			break
+			;;
+		*)
+			echo "Unexpected option: $1"
+			break
+			;;
+	esac
+done
+
+#----------------------------------------------------------
 #  Part 3: Launch the processes
 #----------------------------------------------------------
 for i in ${!VEHICLES[@]}; do
