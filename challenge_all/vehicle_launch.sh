@@ -8,7 +8,7 @@ TIME_WARP=1
 GUI="yes"
 
 ### Declare all vehicles
-V1="uuv_aishwaryaa"
+V1="clownfish1"
 V2="clownfish2"
 V3="clownfish3"
 V4="clownfish4"
@@ -19,7 +19,7 @@ HOSTIP=`hostname -I | awk '{print $3}'`
 #SHOREIP=10.116.0.2
 SHOREIP=$HOSTIP
 VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
-TYPES=("AUV" "AUV" "AUV" "AUV" "kayak" "kayak")
+TYPES=("uuv_aishwaryaa" "AUV" "AUV" "AUV" "kayak" "kayak")
 AUV_PORTS=("9001" "9002" "9003" "9004" "9005" "9006")
 AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
 INCLUDE=("#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
