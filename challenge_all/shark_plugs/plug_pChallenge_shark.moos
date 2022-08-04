@@ -1,0 +1,12 @@
+//------------------------------------------------
+// pChallenge_shark config block
+
+ProcessConfig = pChallenge_shark
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   max_chase_distance = 100
+   min_chase_distance = 10
+}
+

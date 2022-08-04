@@ -72,10 +72,10 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     else if (key.compare("NAV_SPEED")==0) {
       _navSpeed = msg.GetDouble();
     }
-    // else if (key.compare("MODE")==0) {
-    //   _mode = msg.GetString();
-    //   std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
-    // }
+    else if (key.compare("MODE")==0) {
+      _mode = msg.GetString();
+      //std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
+    }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
     }
@@ -107,6 +107,11 @@ bool Challenge::OnConnectToServer()
 {
    RegisterVariables();
    return(true);
+}
+
+//return distance from curr to specified contact
+double dist(std::map<std::string, std::string> contact) {
+    return sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
 }
 
 //---------------------------------------------------------
@@ -145,19 +150,43 @@ bool Challenge::Iterate()
     _nodeReports.pop();
   }
 
-  // loop through our contact list and decide what to do
-  for (std::map<std::string, std::string> contact : _contactList) {
-    double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
-    // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    // std::cout << "Contact type: " << contact["TYPE"] << std::endl;
-    // std::cout << "Max: " << _maxChaseDist << std::endl;
-    // std::cout << "Min: " << _minChaseDist << std::endl;
+  //loop through contact list to find closest contact and shark
+  std::map<std::string, std::string> contact;
+  std::map<std::string, std::string> closestShark;
+  for(std::map<std::string, std::string> c : _contactList) {
+    double distance = dist(c);
+    if(distance<dist(contact) && contact["TYPE"]!="shark") {
+      contact = c;
+    }
+    if(distance<dist(contact) && contact["TYPE"]=="shark") {
+      closestShark = c;
+    }
+  }
+  //if no contacts or sharks / contact == null, return
+  if(contact == NULL && closestShark == NULL) {
+    return;
+  }
 
-    if(contact["TYPE"] != "shark") {
-      // std::cout << "Not shark" << std::endl;
+  double distance = dist(contact);
+
+  if(closestShark!=NULL && dist(closestShark)<100 && closestShark["MODE"]=="MODE@ACTIVE:CHASING") {
+      Notify("LOITER1", "false");
+      Notify("LOITER2", "false");
+      message << "contact = " << closestShark["NAME"];
+      Notify("AVOID_UPDATES", message.str());
+      Notify("AVOID", "true");
+    // if(closestShark["MODE"]=="MODE@ACTIVE:PATROL") {
+    //   Notify("LOITER1", "true");
+    //   Notify("LOITER2", "false");
+    //   Notify("AVOID", "false");
+    // }
+  }else {
+    if(contact["TYPE"]=="whale") {
       if (distance < _minChaseDist) {
         // picked up target, don't need to chase again
         _contactsCollected.push_back(contact);
+
+        //once we have tagged the whale we go back to loiter state
         Notify("CLOSE", "false");
         Notify("LOITER1", "true");
       }
@@ -168,11 +197,10 @@ bool Challenge::Iterate()
         Notify("LOITER1", "true");
       }
       else if (distance < _maxChaseDist) {
-
         // check if this is a contact we have already pursued
         bool isCollected = false;
         for (std::map<std::string, std::string> completed : _contactsCollected) {
-          if (SameContact(contact, completed)) {
+          if (SameContact(contact, completed) || contact["MODE"]=="TAGGED") { //check if we have previously contacted it or if it is tagged (another team has contacted it)
             isCollected = true;
             break;
           }
@@ -191,31 +219,67 @@ bool Challenge::Iterate()
           }
         }
       }
-    }
-    else {
-      std::ostringstream message;
-      message << "contact = " << contact["NAME"];
-      if (contact["MODE"] == "MODE@ACTIVE:CHASING") {
-        bool isAvoiding = false;
-
-        if (!isAvoiding) {
-          Notify("AVOID_UPDATES", message.str());
-          Notify("AVOID", "true");
-          Notify("LOITER1", "false");
-          Notify("LOITER2", "false");
-          isAvoiding = true;
-        }
-      }
-      else {
-        // shark ended chase behavior
-        // how to get previous mode the vehicle was in and then change it back
-          Notify("AVOID", "false");
-          Notify("LOITER1", "true");
-          Notify("LOITER2", "false");
-      }
-
+    }else if(contact["TYPE"]=="treasure") {
+      //handle treasure action
     }
   }
+
+  // loop through our contact list and decide what to do
+  // for (std::map<std::string, std::string> contact : _contactList) {
+  //   double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
+  //   // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
+  //   std::cout << "Max: " << _maxChaseDist << std::endl;
+  //   std::cout << "Min: " << _minChaseDist << std::endl;
+
+  //   if(contact["TYPE"]=="shark") {
+  //     if(distance<100) {
+
+  //     }
+  //   }else if(contact["TYPE"]=="whale") {
+
+  //     if (distance < _minChaseDist) {
+  //       // picked up target, don't need to chase again
+  //       _contactsCollected.push_back(contact);
+
+  //       //once we have tagged the whale we go back to loiter state
+  //       Notify("CLOSE", "false")
+  //       Notify("LOITER1", "true")
+  //     }
+
+  //     if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
+  //       // call off the chase
+  //       Notify("CLOSE", "false");
+  //       Notify("LOITER1", "true");
+  //     }
+  //     else if (distance < _maxChaseDist) {
+  //       // check if this is a contact we have already pursued
+  //       bool isCollected = false;
+  //       for (std::map<std::string, std::string> completed : _contactsCollected) {
+  //         if (SameContact(contact, completed) || contact["MODE"]=="TAGGED") { //check if we have previously contacted it or if it is tagged (another team has contacted it)
+  //           isCollected = true;
+  //           break;
+  //         }
+  //       }
+
+  //       if (!isCollected) {
+  //         // start the chase
+  //         std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
+  //         std::ostringstream message;
+  //         message << "contact = " << contact["NAME"];
+  //         if (contact["TYPE"] == "whale") {
+  //           Notify("CHASE_UPDATES", message.str());
+  //           Notify("CLOSE", "true");
+  //           Notify("LOITER1", "false");
+  //           Notify("LOITER2", "false");
+  //         }
+  //       }
+  //     }
+  //   }else if(contact["TYPE"]=="treasure") {
+
+  //   }else{
+
+  //   }
+  // }
   //
   //---------------------------------------------------
 
@@ -262,6 +326,7 @@ void Challenge::RegisterVariables()
   Register("NAV_DEPTH", 0);
   Register("NAV_HEADING", 0);
   Register("NAV_SPEED", 0);
+  Register("MODE", 0);
 
   Register("NODE_REPORT", 0);
   // BWSI added code
