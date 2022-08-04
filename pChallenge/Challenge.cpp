@@ -72,10 +72,10 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     else if (key.compare("NAV_SPEED")==0) {
       _navSpeed = msg.GetDouble();
     }
-    // else if (key.compare("MODE")==0) {
-    //   _mode = msg.GetString();
-    //   std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
-    // }
+    else if (key.compare("MODE")==0) {
+      _mode = msg.GetString();
+      //std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
+    }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
     }
@@ -169,10 +169,17 @@ bool Challenge::Iterate()
 
   double distance = dist(contact);
 
-  if(closestShark!=NULL && dist(closestShark)<100) {
-    Notify("LOITER1", "false");
-    Notify("LOITER2", "false");
-    //Notify avoid = true, need avdcolreg behavior in bhv file
+  if(closestShark!=NULL && dist(closestShark)<100 && closestShark["MODE"]=="MODE@ACTIVE:CHASING") {
+      Notify("LOITER1", "false");
+      Notify("LOITER2", "false");
+      message << "contact = " << closestShark["NAME"];
+      Notify("AVOID_UPDATES", message.str());
+      Notify("AVOID", "true");
+    // if(closestShark["MODE"]=="MODE@ACTIVE:PATROL") {
+    //   Notify("LOITER1", "true");
+    //   Notify("LOITER2", "false");
+    //   Notify("AVOID", "false");
+    // }
   }else {
     if(contact["TYPE"]=="whale") {
       if (distance < _minChaseDist) {
@@ -319,6 +326,7 @@ void Challenge::RegisterVariables()
   Register("NAV_DEPTH", 0);
   Register("NAV_HEADING", 0);
   Register("NAV_SPEED", 0);
+  Register("MODE", 0);
 
   Register("NODE_REPORT", 0);
   // BWSI added code

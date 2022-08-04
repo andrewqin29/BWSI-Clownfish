@@ -127,7 +127,7 @@ Behavior = BHV_CutRange
         pwt          = 5000                               // example
         condition    = MODE==CHASING
         condition    = CLOSE = true                      // example
-        updates      = CONTACT_INFO                      // example
+        updates      = CHASE_UPDATES                      // example
         endflag      = CLOSE=false     // example
         templating   = spawn
         perpetual    = true
@@ -155,36 +155,6 @@ Behavior = BHV_CutRange
         pursueflag = PURSUIT=true
         giveupflag = PURSUIT=false
 }
-//
-//Behavior = BHVAvdColregsV19
-//{
-//   name         = avdshark
-//   pwt          = 500                               // example
-//   condition    = MODE==AVOIDING                      // example
-//   condition    = AVOID = true
-//   updates      = CONTACT_INFO                      // example
-//   endflag      = CONTACT_RESOLVED = $[CONTACT]     // example
-//   templating   = spawn                             // example
-//   perpetual    = true
-//
-//       bearing_lines = white:0, green:0.65, yellow:0.8, red:1.0   // example
-//
-//             contact = to-be-set            // example
-//          match_type = shark
-//               decay = 15,30            // default (seconds)
-//         extrapolate = true             // default
-//    on_no_contact_ok = true             // default
-//         time_on_leg = 60               // default (seconds)
-//
-//      completed_dist = 500              // default
-//   max_util_cpa_dist = 75               // default
-//   min_util_cpa_dist = 10               // default
-//    no_alert_request = false            // default
-//           pwt_grade = quasi            // default
-//      pwt_inner_dist = 0               // default
-//      pwt_outer_dist = 200              // default
-//}
-//
 
 Behavior = BHV_AvdColregsV19
  {
@@ -194,7 +164,7 @@ Behavior = BHV_AvdColregsV19
    pwt          = 500                               // example
    condition    = AVOID = true                      // example
    condition    = MODE==AVOIDING
-   updates      = CONTACT_INFO                      // example
+   updates      = AVOID_UPDATES                      // example
    endflag      = CONTACT_RESOLVED = $[CONTACT]     // example 
    templating   = spawn                             // example
 
@@ -213,13 +183,16 @@ Behavior = BHV_AvdColregsV19
 
    // Parameters specific to this behavior
    // ------------------------------------
-      completed_dist = 500              // default
+      completed_dist = 100              // default
    max_util_cpa_dist = 75               // default
    min_util_cpa_dist = 10               // default
     no_alert_request = false            // default
            pwt_grade = quasi            // default
       pwt_inner_dist = 50               // default
-      pwt_outer_dist = 200              // default
+      pwt_outer_dist = 100             // default
+      endflag = LOITER1 = true
+      endflag = LOITER2 = false
+      endflag = AVOID = false
  }
 //----------------------------------------------
 Behavior = BHV_MaxSpeed
