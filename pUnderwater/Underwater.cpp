@@ -189,6 +189,12 @@ bool Underwater::Iterate()
             Notify("LOITER1", "false");
             Notify("LOITER2", "false");
           }
+          if (contact["TYPE"] == "fish") {
+            Notify("CHASE_UPDATES", message.str());
+            Notify("CLOSE", "true");
+            Notify("LOITER1", "false");
+            Notify("LOITER2", "false");
+          }
         }
       }
     }
