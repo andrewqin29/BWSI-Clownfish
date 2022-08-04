@@ -73,7 +73,7 @@ ProcessConfig = pNodeReporter
   vessel_type = $(AUV_TYPE)
   //terse_reports = true
 
-	group = alpha
+	group = clowns
 }
 
 //--------------------------------------------------------
@@ -149,6 +149,15 @@ ProcessConfig = uFldNodeBroker
   bridge = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE
 }
 
+ProcessConfig = pChallenge
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   max_chase_distance = 100
+   min_chase_distance = 5
+}
+
 #include vehicle_moos_plugs/plug_uMemWatch.moos
 #include vehicle_moos_plugs/plug_pShare.moos
 #include vehicle_moos_plugs/plug_pHostInfo.moos
@@ -158,5 +167,5 @@ ProcessConfig = uFldNodeBroker
 #include vehicle_moos_plugs/plug_uProcessWatch.moos
 #include vehicle_moos_plugs/plug_uLoadWatch.moos
 #include vehicle_moos_plugs/plug_iSay.moos
-$(INCLUDE)
+// $(INCLUDE)
 

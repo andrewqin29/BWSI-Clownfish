@@ -19,11 +19,11 @@ HOSTIP=`hostname -I | awk '{print $3}'`
 # SHOREIP=10.116.0.2
 SHOREIP=$HOSTIP
 VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
-TYPES=("uuv_aishwaryaa" "AUV" "AUV" "AUV" "kayak" "kayak")
+TYPES=("uuv_aishwaryaa" "kayak" "kayak" "kayak" "kayak" "kayak")
 AUV_PORTS=("9001" "9002" "9003" "9004" "9005" "9006")
 AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
-INCLUDE=("#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
-RUN=("Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false")
+INCLUDE=("#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
+RUN=("Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false")
 
 START_POS=("x=1500,y=1500,speed=0,heading=0,depth=0" \
 "x=-1500,y=1500,speed=0,heading=0,depth=0"  \
@@ -120,5 +120,5 @@ done
 # pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
 
 echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
-nsplug shoreside_base.moos targ_shoreside.moos WARP=$TIME_WARP SHOREIP=$SHOREIP SHORESIDE_PORT=9000 SHORESIDE_PSHARE=9200
+nsplug shoreside_base.moos targ_shoreside.moos WARP=${TIME_WARP} SHOREIP=${SHOREIP} SHORESIDE_PORT=9000 SHORESIDE_PSHARE=9200
 pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &

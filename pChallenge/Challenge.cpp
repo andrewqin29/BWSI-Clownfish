@@ -148,15 +148,16 @@ bool Challenge::Iterate()
   // loop through our contact list and decide what to do
   for (std::map<std::string, std::string> contact : _contactList) {
     double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
-    // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    // std::cout << "Contact type: " << contact["TYPE"] << std::endl;
-    // std::cout << "Max: " << _maxChaseDist << std::endl;
-    // std::cout << "Min: " << _minChaseDist << std::endl;
+    std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
+    std::cout << "Contact type: " << contact["TYPE"] << std::endl;
+    std::cout << "Max: " << _maxChaseDist << std::endl;
+    std::cout << "Min: " << _minChaseDist << std::endl;
 
-    if(contact["TYPE"] != "shark") {
-      // std::cout << "Not shark" << std::endl;
+    if(contact["TYPE"].compare("shark")!=0) {
+      std::cout << "Not shark" << std::endl;
       if (distance < _minChaseDist) {
         // picked up target, don't need to chase again
+        std::cout << "tagged" << std::endl;
         _contactsCollected.push_back(contact);
         Notify("CLOSE", "false");
         Notify("LOITER1", "true");
@@ -164,10 +165,13 @@ bool Challenge::Iterate()
 
       if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
         // call off the chase
+        std::cout << "not within range" << std::endl;
+        std::cout << "Distance: " << distance << std::endl;
         Notify("CLOSE", "false");
         Notify("LOITER1", "true");
       }
       else if (distance < _maxChaseDist) {
+        std::cout << "in range" << std::endl;
 
         // check if this is a contact we have already pursued
         bool isCollected = false;
@@ -180,7 +184,7 @@ bool Challenge::Iterate()
 
         if (!isCollected) {
           // start the chase
-          std::cout << "Dist = " << distance << ", chasing " << contact["NAME"] << std::endl;
+          std::cout << "chasing" << std::endl;
           std::ostringstream message;
           message << "contact = " << contact["NAME"];
           if (contact["TYPE"] == "whale") {
@@ -238,10 +242,10 @@ bool Challenge::OnStartUp()
       string value = line;
       
       if(param == "max_chase_distance") {
-        _maxChaseDist = std::stof(value);
+        _maxChaseDist = 100;
       }
       else if(param == "min_chase_distance") {
-        _minChaseDist = std::stof(value);
+        _minChaseDist = 5;
       }
     }
   }
