@@ -88,31 +88,58 @@ done
 #----------------------------------------------------------
 #  Part 3: Launch the processes
 #----------------------------------------------------------
-for i in ${!VEHICLES[@]}; do
+for i in {0..5}; do
         echo "Launching ${VEHICLES[$i]} MOOS Community. WARP is" $TIME_WARP
-        nsplug  vehicle_base.bhv targ_${VEHICLES[$i]}.bhv AUV_NAME="${VEHICLES[$i]}" \
-                AUV_PORT=${AUV_PORTS[$i]} \
-                AUV_PSHARE=${AUV_PSHARE[$i]} \
-                AUV_TYPE=${TYPES[$i]} \
-                START_POS=${START_POS[$i]} \
-                BLOCK_POS1=${BLOCK_POS1[$i]} \
-                BLOCK_POS2=${BLOCK_POS2[$i]} \
-                WARP=${TIME_WARP} \
-                SHORESIDE_PORT=9000
-        nsplug  vehicle_base.moos targ_${VEHICLES[$i]}.moos \
-                AUV_NAME="${VEHICLES[$i]}" \
-                HOSTIP="${HOSTIP}" \
-                AUV_PORT=${AUV_PORTS[$i]} \
-                AUV_PSHARE=${AUV_PSHARE[$i]} \
-                AUV_TYPE=${TYPES[$i]} \
-                WARP=${TIME_WARP} \
-                START_POS=${START_POS[$i]} \
-                SHOREIP="${SHOREIP}" \
-				INCLUDE="${INCLUDE[$i]}" \
-				RUN="${RUN[$i]}" \
-                SHORESIDE_PORT=9000 \
-                SHORESIDE_PSHARE=9200
-        pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
+		if [$i < 4]
+		then
+			nsplug  vehicle_base.bhv targ_${VEHICLES[$i]}.bhv AUV_NAME="${VEHICLES[$i]}" \
+					AUV_PORT=${AUV_PORTS[$i]} \
+					AUV_PSHARE=${AUV_PSHARE[$i]} \
+					AUV_TYPE=${TYPES[$i]} \
+					START_POS=${START_POS[$i]} \
+					BLOCK_POS1=${BLOCK_POS1[$i]} \
+					BLOCK_POS2=${BLOCK_POS2[$i]} \
+					WARP=${TIME_WARP} \
+					SHORESIDE_PORT=9000
+			nsplug  vehicle_base.moos targ_${VEHICLES[$i]}.moos \
+					AUV_NAME="${VEHICLES[$i]}" \
+					HOSTIP="${HOSTIP}" \
+					AUV_PORT=${AUV_PORTS[$i]} \
+					AUV_PSHARE=${AUV_PSHARE[$i]} \
+					AUV_TYPE=${TYPES[$i]} \
+					WARP=${TIME_WARP} \
+					START_POS=${START_POS[$i]} \
+					SHOREIP="${SHOREIP}" \
+					INCLUDE="${INCLUDE[$i]}" \
+					RUN="${RUN[$i]}" \
+					SHORESIDE_PORT=9000 \
+					SHORESIDE_PSHARE=9200
+			pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
+		else
+			nsplug  surface_base.bhv targ_${VEHICLES[$i]}.bhv AUV_NAME="${VEHICLES[$i]}" \
+					AUV_PORT=${AUV_PORTS[$i]} \
+					AUV_PSHARE=${AUV_PSHARE[$i]} \
+					AUV_TYPE=${TYPES[$i]} \
+					START_POS=${START_POS[$i]} \
+					BLOCK_POS1=${BLOCK_POS1[$i]} \
+					BLOCK_POS2=${BLOCK_POS2[$i]} \
+					WARP=${TIME_WARP} \
+					SHORESIDE_PORT=9000
+			nsplug  surface_base.moos targ_${VEHICLES[$i]}.moos \
+					AUV_NAME="${VEHICLES[$i]}" \
+					HOSTIP="${HOSTIP}" \
+					AUV_PORT=${AUV_PORTS[$i]} \
+					AUV_PSHARE=${AUV_PSHARE[$i]} \
+					AUV_TYPE=${TYPES[$i]} \
+					WARP=${TIME_WARP} \
+					START_POS=${START_POS[$i]} \
+					SHOREIP="${SHOREIP}" \
+					INCLUDE="${INCLUDE[$i]}" \
+					RUN="${RUN[$i]}" \
+					SHORESIDE_PORT=9000 \
+					SHORESIDE_PSHARE=9200
+			pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
+		fi
 done
 
 # echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
