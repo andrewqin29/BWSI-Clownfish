@@ -72,6 +72,10 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     else if (key.compare("NAV_SPEED")==0) {
       _navSpeed = msg.GetDouble();
     }
+    // else if (key.compare("MODE")==0) {
+    //   _mode = msg.GetString();
+    //   std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
+    // }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
     }

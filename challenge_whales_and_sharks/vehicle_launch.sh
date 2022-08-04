@@ -28,7 +28,7 @@ START_POS=("x=1500,y=1500,speed=0,heading=0,depth=0" \
 "x=-1500,y=-1500,speed=0,heading=0,depth=0" \
 "x=1500,y=-1500,speed=0,heading=0,depth=0" \
 "x=1500,y=750,speed=0,heading=0,depth=0" \
-"x=-1500,y=750,speed=0,heading=0,depth=0")
+"x=-700,y=800,speed=0,heading=0,depth=0") # -1500, 750
 
 BLOCK_POS1=("startx=1400,starty=1400,x=800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
 "startx=-1400,starty=1400,x=-800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \

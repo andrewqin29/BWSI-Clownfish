@@ -6,6 +6,7 @@ initialize   STATION_KEEP = false
 initialize   LOITER1  = true
 initialize   LOITER2 = false
 initialize   CLOSE   = false
+initialize   AVOID   = false
 
 set MODE = ACTIVE {
   DEPLOY = true
@@ -36,6 +37,13 @@ set MODE = LOITERING2 {
 set MODE = CHASING {
   MODE = ACTIVE
   CLOSE = true
+  LOITER1 = false
+  LOITER2 = false
+}
+
+set MODE = AVOIDING {
+  MODE = ACTIVE
+  AVOID = true
   LOITER1 = false
   LOITER2 = false
 }
@@ -147,7 +155,72 @@ Behavior = BHV_CutRange
         pursueflag = PURSUIT=true
         giveupflag = PURSUIT=false
 }
+//
+//Behavior = BHVAvdColregsV19
+//{
+//   name         = avdshark
+//   pwt          = 500                               // example
+//   condition    = MODE==AVOIDING                      // example
+//   condition    = AVOID = true
+//   updates      = CONTACT_INFO                      // example
+//   endflag      = CONTACT_RESOLVED = $[CONTACT]     // example
+//   templating   = spawn                             // example
+//   perpetual    = true
+//
+//       bearing_lines = white:0, green:0.65, yellow:0.8, red:1.0   // example
+//
+//             contact = to-be-set            // example
+//          match_type = shark
+//               decay = 15,30            // default (seconds)
+//         extrapolate = true             // default
+//    on_no_contact_ok = true             // default
+//         time_on_leg = 60               // default (seconds)
+//
+//      completed_dist = 500              // default
+//   max_util_cpa_dist = 75               // default
+//   min_util_cpa_dist = 10               // default
+//    no_alert_request = false            // default
+//           pwt_grade = quasi            // default
+//      pwt_inner_dist = 0               // default
+//      pwt_outer_dist = 200              // default
+//}
+//
 
+Behavior = BHV_AvdColregsV19
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = avdshark_                     // example
+   pwt          = 500                               // example
+   condition    = AVOID = true                      // example
+   condition    = MODE==AVOIDING
+   updates      = CONTACT_INFO                      // example
+   endflag      = CONTACT_RESOLVED = $[CONTACT]     // example 
+   templating   = spawn                             // example
+
+
+   // General Contact Behavior Parameters
+   // -----------------------------------
+       bearing_lines = white:0, green:0.65, yellow:0.8, red:1.0   // example
+
+             contact = to-be-set           // example
+	  match_type = shark
+               decay = 15,30            // default (seconds)
+         extrapolate = true             // default
+    on_no_contact_ok = true             // default
+         time_on_leg = 60               // default (seconds)
+
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+      completed_dist = 500              // default
+   max_util_cpa_dist = 75               // default
+   min_util_cpa_dist = 10               // default
+    no_alert_request = false            // default
+           pwt_grade = quasi            // default
+      pwt_inner_dist = 50               // default
+      pwt_outer_dist = 200              // default
+ }
 //----------------------------------------------
 Behavior = BHV_MaxSpeed
 {
@@ -243,7 +316,7 @@ Behavior = BHV_ConstantDepth
         //-----------------------------
         name = survey_depth
         pwt = 100
-        condition = MODE==LOITERING
+        condition = MODE==ACTIVE
         updates = DEPTH_UPDATES
 
         // Parameters specific to this behavior
