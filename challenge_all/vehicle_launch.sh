@@ -8,7 +8,7 @@ TIME_WARP=1
 GUI="yes"
 
 ### Declare all vehicles
-V1="clownfish1"
+V1="uuv_aishwaryaa"
 V2="clownfish2"
 V3="clownfish3"
 V4="clownfish4"
