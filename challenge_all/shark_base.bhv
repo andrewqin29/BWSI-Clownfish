@@ -3,8 +3,8 @@
 
 initialize   DEPLOY  = false
 initialize   RETURN  = false
-initialize   PATROL  = true
-initialize   CHASE  = false
+initialize   PATROL  = false
+initialize   CHASE  = true
 initialize   STKEEP  = false
 
 set MODE = ACTIVE {

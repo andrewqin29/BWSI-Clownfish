@@ -38,6 +38,8 @@ class Challenge : public CMOOSApp
   double _minChaseDist;
   double _maxChaseDist;
   std::string _mode;
+  std::string _prevMode;
+  
   std::queue<std::string> _nodeReports;
   std::list<std::map<std::string, std::string> > _contactList;
   std::list<std::map<std::string, std::string> > _contactsCollected;

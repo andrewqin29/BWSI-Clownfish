@@ -15,6 +15,50 @@ AUV_PSHARE=(9423 9424 9425)
 START_POS=("x=1146.0,y=-260.0,speed=0,depth=500,heading=44" "x=-270.0,y=1034.0,speed=0,depth=500,heading=188" "x=-1216.0,y=-664.0,speed=0,depth=500,heading=92")
 
 #----------------------------------------------------------
+#  Part 2: Check for and handle command-line arguments
+#----------------------------------------------------------
+SHORT=h,w:
+LONG=help,nogui,warp:
+OPTS=$(getopt --options $SHORT --longoptions $LONG -- "$@")
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1; fi
+
+eval set -- "$OPTS"
+
+while true;
+do
+    case "$1" in
+        -h | --help )
+            echo "./launch.sh <OPTIONS>"
+            echo "-w <#> or --warp <#> is the warp factor"
+            echo "--nogui turns off the GUI"
+            echo "-h or --help prints this message"
+            exit 2
+            ;;
+
+        --nogui )
+            GUI="no"
+            shift
+            ;;
+
+        -w | --warp )
+            TIME_WARP=$2
+            shift 2
+            ;;
+
+        -- )
+            shift;
+            break
+            ;;
+
+        *)
+            echo "Unexpected option: $1"
+            break
+            ;;
+    esac
+done
+
+#----------------------------------------------------------
 #  Part 3: Launch the processes
 #----------------------------------------------------------
 for i in ${!VEHICLES[@]}; do

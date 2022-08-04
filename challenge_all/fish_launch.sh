@@ -25,6 +25,50 @@ START_POS=("x=-416.0,y=-436.0,speed=0,depth=200,heading=181" "x=1484.0,y=525.0,s
 BHV=("polygon=radial::x=-416.23,y=-449.00,radius=3,pts=6,label=Halfmoon_loiter" "polygon=radial::x=1482.43,y=542.93,radius=3,pts=6,label=Bobtail_snipe_eel_loiter" "polygon=radial::x=305.10,y=-1247.53,radius=3,pts=6,label=Worm_eel_loiter" "polygon=radial::x=-447.92,y=1068.46,radius=3,pts=6,label=Kokanee_loiter" "polygon=radial::x=108.29,y=1280.89,radius=3,pts=6,label=Pencilsmelt_loiter" "polygon=radial::x=1283.28,y=473.85,radius=3,pts=6,label=Pineconefish_loiter" "polygon=radial::x=377.76,y=-804.30,radius=3,pts=6,label=Kanyu_loiter" "polygon=radial::x=-782.42,y=1181.00,radius=3,pts=6,label=Rattail_loiter" "polygon=radial::x=-1266.12,y=-955.27,radius=3,pts=6,label=Trunkfish_loiter" "polygon=radial::x=436.46,y=-979.26,radius=3,pts=6,label=Northern_pike_loiter" "polygon=radial::x=882.51,y=-673.13,radius=3,pts=6,label=Yellowtail_horse_mackerel_loiter" "polygon=radial::x=-666.64,y=-964.91,radius=3,pts=6,label=Frogfish_loiter")
 
 #----------------------------------------------------------
+#  Part 2: Check for and handle command-line arguments
+#----------------------------------------------------------
+SHORT=h,w:
+LONG=help,nogui,warp:
+OPTS=$(getopt --options $SHORT --longoptions $LONG -- "$@")
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1; fi
+
+eval set -- "$OPTS"
+
+while true;
+do
+    case "$1" in
+        -h | --help )
+            echo "./launch.sh <OPTIONS>"
+            echo "-w <#> or --warp <#> is the warp factor"
+            echo "--nogui turns off the GUI"
+            echo "-h or --help prints this message"
+            exit 2
+            ;;
+
+        --nogui )
+            GUI="no"
+            shift
+            ;;
+
+        -w | --warp )
+            TIME_WARP=$2
+            shift 2
+            ;;
+
+        -- )
+            shift;
+            break
+            ;;
+
+        *)
+            echo "Unexpected option: $1"
+            break
+            ;;
+    esac
+done
+
+#----------------------------------------------------------
 #  Part 3: Launch the processes
 #----------------------------------------------------------
 for i in ${!VEHICLES[@]}; do

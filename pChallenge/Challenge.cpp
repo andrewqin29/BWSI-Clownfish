@@ -72,10 +72,9 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     else if (key.compare("NAV_SPEED")==0) {
       _navSpeed = msg.GetDouble();
     }
-    // else if (key.compare("MODE")==0) {
-    //   _mode = msg.GetString();
-    //   std::cout << "Vehicle mode: " << msg.GetString() << std::endl;
-    // }
+    else if (key.compare("MODE")==0) {
+      _mode = msg.GetString();
+    }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
     }
@@ -195,12 +194,14 @@ bool Challenge::Iterate()
           }
         }
       }
-    }
+    } 
     else {
       std::ostringstream message;
       message << "contact = " << contact["NAME"];
+      std::cout << "trying to avoid: " << contact["NAME"] << std::endl;
       if (contact["MODE"] == "MODE@ACTIVE:CHASING") {
         bool isAvoiding = false;
+        _prevMode = _mode;
 
         if (!isAvoiding) {
           Notify("AVOID_UPDATES", message.str());
@@ -213,11 +214,27 @@ bool Challenge::Iterate()
       else {
         // shark ended chase behavior
         // how to get previous mode the vehicle was in and then change it back
+        if (_prevMode == "MODE@ACTIVE:CHASING") {
+          // if it was chasing a whale, fish, or treasure resume chase bhv
           Notify("AVOID", "false");
+          Notify("CLOSE", "true");
+          Notify("LOITER1", "false");
+          Notify("LOITER2", "false");
+        }
+        else if (_prevMode == "MODE@ACTIVE:LOITERING1") {
+          // switch back to Loitering 1
+          Notify("AVOID", "false");
+          Notify("CLOSE", "false");
           Notify("LOITER1", "true");
           Notify("LOITER2", "false");
+        }
+        else {
+          // last case should only be if previous mode was Loitering 2
+          Notify("AVOID", "false");
+          Notify("LOITER1", "false");
+          Notify("LOITER2", "true");
+        }
       }
-
     }
   }
   //
