@@ -1,0 +1,14 @@
+//------------------------------------------------
+// pChallenge_fish config block
+
+ProcessConfig = pChallenge_fish
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   max_chase_distance = 100
+   min_chase_distance = 5
+
+	name = $(AUV_NAME)
+}
+

@@ -1,0 +1,13 @@
+//--------------------------------------------------------
+// uTimerScript Configuration Block
+
+ProcessConfig = uTimerScript
+{
+  AppTick   = 4
+  CommsTick = 4
+  
+}
+
+
+ 
+

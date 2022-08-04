@@ -1,0 +1,23 @@
+//--------------------------------------------------------
+// uTimerScript Configuration Block
+
+ProcessConfig = uTimerScript
+{
+  AppTick   = 4
+  CommsTick = 4
+  
+  PAUSED     = false
+  RESET_MAX  = unlimited
+  RESET_TIME = end
+
+//  RANDVAR = varname=X, min=-1500,  max=1500, key=at_reset
+//  RANDVAR = varname=Y, min=-1500,  max=1500, key=at_reset
+  RANDVAR = varname=Z, min=50, max=$(MAX_DEPTH), key=at_reset
+
+  EVENT = var=CONST_DEPTH_UPDATES,val="depth=$[Z]",time=90
+//  EVENT = var=FISH_LOITER, val="polygon=radial::x=$[X],y=$[Y],radius=3,pts=6,label=$(AUV_NAME)_loiter", time=15:00
+}
+
+
+ 
+
