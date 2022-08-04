@@ -16,7 +16,7 @@ V5="clownfish5"
 V6="clownfish6"
 V7="clownfish7"
 HOSTIP=`hostname -I | awk '{print $3}'`
-#SHOREIP=10.116.0.2
+# SHOREIP=10.116.0.2
 SHOREIP=$HOSTIP
 VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
 TYPES=("AUV" "AUV" "AUV" "AUV" "kayak" "kayak")
@@ -118,3 +118,7 @@ done
 # echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
 # nsplug shoreside_base.moos targ_shoreside.moos WARP=${TIME_WARP} SHORESIDE_PSHARE=9200 SHORESIDE_PORT=9000
 # pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
+
+echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
+nsplug shoreside_base.moos targ_shoreside.moos WARP=$TIME_WARP SHOREIP=$SHOREIP SHORESIDE_PORT=9000 SHORESIDE_PSHARE=9200
+pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &

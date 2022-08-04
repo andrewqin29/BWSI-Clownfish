@@ -91,6 +91,6 @@ for i in ${!VEHICLES[@]}; do
 	pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
 done
 
-echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
-nsplug shoreside_base.moos targ_shoreside.moos WARP=$TIME_WARP SHOREIP=$SHOREIP SHORESIDE_PORT=9000 SHORESIDE_PSHARE=9200
-pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
+# echo "Launching shoreside MOOS Community, WARP is" $TIME_WARP
+# nsplug shoreside_base.moos targ_shoreside.moos WARP=$TIME_WARP SHOREIP=$SHOREIP SHORESIDE_PORT=9000 SHORESIDE_PSHARE=9200
+# pAntler targ_shoreside.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
