@@ -78,6 +78,7 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     // }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
+      std::cout << "Node report: " << msg.GetString() << std::endl;
     }
     else {
       std::cerr << "Unknown message type: " << key << std::endl;
@@ -267,7 +268,7 @@ void Challenge::RegisterVariables()
   Register("NAV_HEADING", 0);
   Register("NAV_SPEED", 0);
 
-  Register("NODE_REPORT", 0);
+  Register("NODE_REPORT", 2);
   // BWSI added code
   //--------------------------
 }

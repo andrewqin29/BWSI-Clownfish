@@ -6,5 +6,10 @@ ProcessConfig = pShare
   AppTick    = 1
   CommsTick  = 1
 
+  output = src_name=NODE_REPORT*, route = localhost:9201
+  output = src_name=NODE_REPORT*, route = localhost:9202
+  output = src_name=NODE_REPORT*, route = localhost:9203
+  output = src_name=NODE_REPORT*, route = localhost:9204
+
   input = route =  localhost:$(AUV_PSHARE)
 }

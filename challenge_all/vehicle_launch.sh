@@ -14,7 +14,6 @@ V3="clownfish3"
 V4="clownfish4"
 V5="clownfish5"
 V6="clownfish6"
-V7="clownfish7"
 HOSTIP=`hostname -I | awk '{print $3}'`
 # SHOREIP=10.116.0.2
 SHOREIP=$HOSTIP
