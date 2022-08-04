@@ -29,6 +29,7 @@ Processconfig = ANTLER
   Run = iSay           @ NewConsole = false
   Run = pContactMgrV20 @ NewConsole = false
   Run = pRealm         @ NewConsole = false
+  $(RUN)
 }
 
 //---------------------------------------------------------
@@ -157,5 +158,5 @@ ProcessConfig = uFldNodeBroker
 #include vehicle_moos_plugs/plug_uProcessWatch.moos
 #include vehicle_moos_plugs/plug_uLoadWatch.moos
 #include vehicle_moos_plugs/plug_iSay.moos
-#include moos_plugs/plug_pChallenge.moos
+$(INCLUDE)
 

@@ -22,6 +22,8 @@ VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
 TYPES=("AUV" "AUV" "AUV" "AUV" "kayak" "kayak")
 AUV_PORTS=("9001" "9002" "9003" "9004" "9005" "9006")
 AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
+INCLUDE=("#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pUnderwater.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
+RUN=("Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pUnderwater @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false")
 
 START_POS=("x=1500,y=1500,speed=0,heading=0,depth=0" \
 "x=-1500,y=1500,speed=0,heading=0,depth=0"  \
@@ -106,6 +108,8 @@ for i in ${!VEHICLES[@]}; do
                 WARP=${TIME_WARP} \
                 START_POS=${START_POS[$i]} \
                 SHOREIP="${SHOREIP}" \
+				INCLUDE="${INCLUDE[$i]}" \
+				RUN="${RUN[$i]}" \
                 SHORESIDE_PORT=9000 \
                 SHORESIDE_PSHARE=9200
         pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &

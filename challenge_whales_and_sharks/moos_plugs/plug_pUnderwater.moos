@@ -1,0 +1,12 @@
+//------------------------------------------------
+// pUnderwater config block
+
+ProcessConfig = pUnderwater
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   max_chase_distance = 100
+   min_chase_distance = 5
+}
+
