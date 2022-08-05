@@ -11,7 +11,8 @@ ProcessConfig = uSimMarine
 
   //rotate_speed = 0.012
   //drift_x      = 0.0045
+  max_depth_rate       = 6
 
-  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+  thrust_map = 0:0, 100:$(MAX_SPEED)
   //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
 }

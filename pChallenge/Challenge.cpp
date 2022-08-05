@@ -148,10 +148,10 @@ bool Challenge::Iterate()
   // loop through our contact list and decide what to do
   for (std::map<std::string, std::string> contact : _contactList) {
     double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
-    // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    // std::cout << "Contact type: " << contact["TYPE"] << std::endl;
-    // std::cout << "Max: " << _maxChaseDist << std::endl;
-    // std::cout << "Min: " << _minChaseDist << std::endl;
+    std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
+    std::cout << "Contact type: " << contact["TYPE"] << std::endl;
+    std::cout << "Max: " << _maxChaseDist << std::endl;
+    std::cout << "Min: " << _minChaseDist << std::endl;
 
     if (contact["TYPE"] == "shark" && distance < 100) {
       std::ostringstream message;
@@ -196,25 +196,45 @@ bool Challenge::Iterate()
       }
     }
     else if(contact["TYPE"] != "shark") { // contact["TYPE"].compare("shark")!=0
-      // std::cout << "Not shark" << std::endl;
+      std::cout << "Not shark" << std::endl;
       // assumes that the mode change radius, _minChaseDist, is constant among the animals and objects
-      if (distance < _minChaseDist && abs(std::stod(contact["DEP"]) - _navDepth) < 50) { // assume that objects will change if within 50m of depth
+      if (distance < _minChaseDist) { 
         // picked up target, don't need to chase again
-        // std::cout << "tagged" << std::endl;
-        _contactsCollected.push_back(contact);
-        if (_prevMode == "MODE@ACTIVE:LOITERING1") {
-          // switch back to Loitering 1
-          Notify("CLOSE", "false");
-          Notify("LOITER1", "true");
-          Notify("LOITER2", "false");
+        if (contact["TYPE"] != "whale" && abs(std::stod(contact["DEP"]) - _navDepth) < 5) {
+          std::cout << "tagged" << std::endl;
+          _contactsCollected.push_back(contact);
+          if (_prevMode == "MODE@ACTIVE:LOITERING1") {
+            // switch back to Loitering 1
+            Notify("CLOSE", "false");
+            Notify("LOITER1", "true");
+            Notify("LOITER2", "false");
+          }
+          else {
+            // last case should only be if previous mode was Loitering 2
+            // or if it starts off in range to chase
+            Notify("CLOSE", "false");
+            Notify("LOITER1", "false");
+            Notify("LOITER2", "true");
+          }
         }
-        else {
-          // last case should only be if previous mode was Loitering 2
-          // or if it starts off in range to chase
-          Notify("CLOSE", "false");
-          Notify("LOITER1", "false");
-          Notify("LOITER2", "true");
+        else if (contact["TYPE"] == "whale") {
+          std::cout << "tagged" << std::endl;
+          _contactsCollected.push_back(contact);
+          if (_prevMode == "MODE@ACTIVE:LOITERING1") {
+            // switch back to Loitering 1
+            Notify("CLOSE", "false");
+            Notify("LOITER1", "true");
+            Notify("LOITER2", "false");
+          }
+          else {
+            // last case should only be if previous mode was Loitering 2
+            // or if it starts off in range to chase
+            Notify("CLOSE", "false");
+            Notify("LOITER1", "false");
+            Notify("LOITER2", "true");
+          }
         }
+        
       }
       // runs when not correct depth. Is it necessary?
       // else if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
@@ -247,41 +267,45 @@ bool Challenge::Iterate()
 
         if (!isCollected) {
           // start the chase
-          // std::cout << "chasing" << std::endl;
+          std::cout << "chasing" << std::endl;
           _prevMode = _mode;
           std::ostringstream message;
           message << "contact = " << contact["NAME"];
+          std::cout << "vehicle speed is: " << _navSpeed << std::endl;
+          // std::ostringstream message2;
+          // message2 << "speed = 6";
           // finding vehicle type based on speed
           if (contact["TYPE"] == "whale" && _navSpeed > 10) { 
-            // std::cout << "chasing whale" << std::endl;
+            std::cout << "chasing whale" << std::endl;
             Notify("CHASE_UPDATES", message.str());
             Notify("CLOSE", "true");
             Notify("LOITER1", "false");
             Notify("LOITER2", "false");
+            // Notify("MAX_SPEED_UPDATES", message2.str());
           }
           else if (contact["TYPE"] == "fish" && _navSpeed < 10) {
-            // std::cout << "chasing fish" << std::endl;
+            std::cout << "chasing fish" << std::endl;
             std::ostringstream depth_msg;
             depth_msg << "depth = " << contact["DEP"];
-            // std::cout << "fish depth = " << contact["DEP"] << " vehicle depth = " << _navDepth << std::endl;
+            std::cout << "fish depth = " << contact["DEP"] << " vehicle depth = " << _navDepth << std::endl;
             Notify("CHASE_UPDATES", message.str());
             Notify("CONST_DEPTH_UPDATES", depth_msg.str()); // need to check if this is the correct constant depth behavior
             Notify("CLOSE", "true");
             Notify("LOITER1", "false");
             Notify("LOITER2", "false");
           }
-          else if (contact["TYPE"] == "treasure" && _navSpeed < 10) {
-            // need to add final behavior to bring treasure to shore, probably change mode to return and return point to starting point
-            // std::cout << "chasing treasure" << std::endl;
-            std::ostringstream depth_msg;
-            depth_msg << "depth = " << contact["DEP"];
-            // std::cout << "treasure depth = " << contact["DEP"] << " vehicle depth = " << _navDepth << std::endl;
-            Notify("CHASE_UPDATES", message.str());
-            Notify("CONST_DEPTH_UPDATES", depth_msg.str()); // need to check if this is the correct constant depth behavior
-            Notify("CLOSE", "true");
-            Notify("LOITER1", "false");
-            Notify("LOITER2", "false");
-          }
+          // else if (contact["TYPE"] == "treasure" && _navSpeed < 10) {
+          //   // need to add final behavior to bring treasure to shore, probably change mode to return and return point to starting point
+          //   std::cout << "chasing treasure" << std::endl;
+          //   std::ostringstream depth_msg;
+          //   depth_msg << "depth = " << contact["DEP"];
+          //   std::cout << "treasure depth = " << contact["DEP"] << " vehicle depth = " << _navDepth << std::endl;
+          //   Notify("CHASE_UPDATES", message.str());
+          //   Notify("CONST_DEPTH_UPDATES", depth_msg.str()); // need to check if this is the correct constant depth behavior
+          //   Notify("CLOSE", "true");
+          //   Notify("LOITER1", "false");
+          //   Notify("LOITER2", "false");
+          // }
         }
       }
     } 

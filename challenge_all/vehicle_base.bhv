@@ -148,7 +148,7 @@ Behavior = BHV_CutRange
         // Parameters specific to this behavior
         // ------------------------------------
         giveup_dist = 2000              // Meters. Default is 0, disabled
-        patience = 45               // [0,100]. Default 0
+        patience = 0               // [0,100]. Default 0
         pwt_inner_dist = 0               // Meters. Default is 0.
         pwt_outer_dist = 3000              // Meters. Default is 0.
 
@@ -212,7 +212,7 @@ Behavior = BHV_ConstantSpeed
    // ---------------------------
    name         = const_spd_transit  // example
    pwt          = 100                // default
-   condition    = MODE==ACTIVE:CHASING   // example
+   condition    = MODE==ACTIVE   // example
    updates      = CONST_SPD_UPDATES  // example
 
    // Parameters specific to this behavior
@@ -239,7 +239,7 @@ Behavior = BHV_ConstantDepth
    // ------------------------------------
             basewidth = 0.2          // default
              duration = 100000            // default
-                depth = 150            // default
+                depth = $(CONST_DEPTH)            // default
    depth_mismatch_var = DEPTH_DIFF   // example
             peakwidth = 0            // default
           summitdelta = 0            // default

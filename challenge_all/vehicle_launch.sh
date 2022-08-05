@@ -14,23 +14,24 @@ V3="clownfish3"
 V4="clownfish4"
 V5="clownfish5"
 V6="clownfish6"
-V7="clownfish7"
 HOSTIP=`hostname -I | awk '{print $3}'`
-# SHOREIP=10.116.0.2
-SHOREIP=$HOSTIP
+SHOREIP=10.116.0.2
+# SHOREIP=$HOSTIP
 VEHICLES=($V1 $V2 $V3 $V4 $V5 $V6)
-TYPES=("uuv_aishwaryaa" "kayak" "kayak" "kayak" "kayak" "kayak")
+TYPES=("uuv_aishwaryaa" "uuv" "uuv" "uuv" "kayak" "kayak")
 AUV_PORTS=("9001" "9002" "9003" "9004" "9005" "9006")
 AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
 INCLUDE=("#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
 RUN=("Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false")
 
-START_POS=("x=1500,y=1500,speed=0,heading=0,depth=250" \
-"x=-1500,y=1500,speed=0,heading=0,depth=250"  \
-"x=-1500,y=-1500,speed=0,heading=0,depth=250" \
-"x=1500,y=-1500,speed=0,heading=0,depth=250" \
-"x=1500,y=750,speed=0,heading=0,depth=250" \
-"x=-1500,y=750,speed=0,heading=0,depth=250") # -1500, 750
+MAX_SPEED=("6" "6" "6" "6" "15" "15")
+CONST_DEPTH=("200" "200" "200" "200" "0" "0")
+START_POS=("x=1500,y=1500,speed=0,heading=0,depth=200" \
+"x=-1500,y=1500,speed=0,heading=0,depth=200" \
+"x=-1500,y=-1500,speed=0,heading=0,depth=200" \
+"x=1500,y=-1500,speed=0,heading=0,depth=200" \
+"x=1500,y=750,speed=0,heading=0,depth=0" \
+"x=-1500,y=750,speed=0,heading=0,depth=0") # -1500, 750
 
 BLOCK_POS1=("startx=1400,starty=1400,x=800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
 "startx=-1400,starty=1400,x=-800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
@@ -97,6 +98,7 @@ for i in ${!VEHICLES[@]}; do
                 START_POS=${START_POS[$i]} \
                 BLOCK_POS1=${BLOCK_POS1[$i]} \
                 BLOCK_POS2=${BLOCK_POS2[$i]} \
+				CONST_DEPTH=${CONST_DEPTH[$i]} \
                 WARP=${TIME_WARP} \
                 SHORESIDE_PORT=9000
         nsplug  vehicle_base.moos targ_${VEHICLES[$i]}.moos \
@@ -110,6 +112,7 @@ for i in ${!VEHICLES[@]}; do
                 SHOREIP="${SHOREIP}" \
 				INCLUDE="${INCLUDE[$i]}" \
 				RUN="${RUN[$i]}" \
+				MAX_SPEED=${MAX_SPEED[$i]} \
                 SHORESIDE_PORT=9000 \
                 SHORESIDE_PSHARE=9200
         pAntler targ_${VEHICLES[$i]}.moos --MOOSTimeWarp=$TIME_WARP >& /dev/null &
