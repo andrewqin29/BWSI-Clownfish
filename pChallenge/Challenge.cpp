@@ -160,6 +160,7 @@ bool Challenge::Iterate()
 
       if (contact["MODE"] == "MODE@ACTIVE:CHASING" && distance < 100) {
         // std::cout << "trying to avoid: " << contact["NAME"] << std::endl;
+        // std::cout << "contact mode is: " << contact["MODE"] << std::endl;
         _prevMode = _mode;
         Notify("AVOID_UPDATES", message.str());
         Notify("AVOID", "true");
@@ -194,7 +195,7 @@ bool Challenge::Iterate()
       }
     }
     else if(contact["TYPE"] != "shark") { // contact["TYPE"].compare("shark")!=0
-      std::cout << "Not shark" << std::endl;
+      // std::cout << "Not shark" << std::endl;
       if (distance < _minChaseDist) {
         // picked up target, don't need to chase again
         std::cout << "tagged" << std::endl;
@@ -205,13 +206,13 @@ bool Challenge::Iterate()
 
       if ( (distance < _minChaseDist) || (distance > _maxChaseDist) ) {
         // call off the chase
-        std::cout << "not within range" << std::endl;
-        std::cout << "Distance: " << distance << std::endl;
+        // std::cout << "not within range" << std::endl;
+        // std::cout << "Distance: " << distance << std::endl;
         Notify("CLOSE", "false");
         Notify("LOITER1", "true");
       }
       else if (distance < _maxChaseDist) {
-        std::cout << "in range" << std::endl;
+        // std::cout << "in range" << std::endl;
 
         // check if this is a contact we have already pursued
         bool isCollected = false;
@@ -224,10 +225,11 @@ bool Challenge::Iterate()
 
         if (!isCollected) {
           // start the chase
-          std::cout << "chasing" << std::endl;
+          // std::cout << "chasing" << std::endl;
           std::ostringstream message;
           message << "contact = " << contact["NAME"];
           if (contact["TYPE"] == "whale") {
+            // std::cout << "chasing whale" << std::endl;
             Notify("CHASE_UPDATES", message.str());
             Notify("CLOSE", "true");
             Notify("LOITER1", "false");
