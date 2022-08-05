@@ -77,6 +77,7 @@ bool Challenge::OnNewMail(MOOSMSG_LIST &NewMail)
     }
     else if (key.compare("NODE_REPORT")==0) {
       _nodeReports.push(msg.GetString());
+      // std::cout << "Node Report: " << msg.GetString() << std::endl;
     }
     else {
       std::cerr << "Unknown message type: " << key << std::endl;
@@ -147,12 +148,52 @@ bool Challenge::Iterate()
   // loop through our contact list and decide what to do
   for (std::map<std::string, std::string> contact : _contactList) {
     double distance = sqrt(pow(std::stof(contact["X"]) - _navX, 2) + pow(std::stof(contact["Y"])-_navY,2));
-    std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
-    std::cout << "Contact type: " << contact["TYPE"] << std::endl;
-    std::cout << "Max: " << _maxChaseDist << std::endl;
-    std::cout << "Min: " << _minChaseDist << std::endl;
+    // std::cout << "Dist = " << distance << " to " << contact["NAME"] << std::endl;
+    // std::cout << "Contact type: " << contact["TYPE"] << std::endl;
+    // std::cout << "Max: " << _maxChaseDist << std::endl;
+    // std::cout << "Min: " << _minChaseDist << std::endl;
 
-    if(contact["TYPE"].compare("shark")!=0) {
+    if (contact["TYPE"] == "shark" && distance < 100) {
+      std::ostringstream message;
+      message << "contact = " << contact["NAME"];
+      // std::cout << "contact is: " << contact["NAME"] << std::endl;
+
+      if (contact["MODE"] == "MODE@ACTIVE:CHASING" && distance < 100) {
+        // std::cout << "trying to avoid: " << contact["NAME"] << std::endl;
+        _prevMode = _mode;
+        Notify("AVOID_UPDATES", message.str());
+        Notify("AVOID", "true");
+        Notify("LOITER1", "false");
+        Notify("LOITER2", "false");
+      }
+      else {
+        // shark ended chase behavior
+        // how to get previous mode the vehicle was in and then change it back
+        // std::cout << "previous mode: " << _prevMode << std::endl;
+        // std::cout << "current mode: " << _mode << std::endl;
+        if (_prevMode == "MODE@ACTIVE:CHASING") {
+          // if it was chasing a whale, fish, or treasure resume chase bhv
+          Notify("AVOID", "false");
+          Notify("CLOSE", "true");
+          Notify("LOITER1", "false");
+          Notify("LOITER2", "false");
+        }
+        else if (_prevMode == "MODE@ACTIVE:LOITERING1") {
+          // switch back to Loitering 1
+          Notify("AVOID", "false");
+          Notify("CLOSE", "false");
+          Notify("LOITER1", "true");
+          Notify("LOITER2", "false");
+        }
+        else {
+          // last case should only be if previous mode was Loitering 2
+          Notify("AVOID", "false");
+          Notify("LOITER1", "false");
+          Notify("LOITER2", "true");
+        }
+      }
+    }
+    else if(contact["TYPE"] != "shark") { // contact["TYPE"].compare("shark")!=0
       std::cout << "Not shark" << std::endl;
       if (distance < _minChaseDist) {
         // picked up target, don't need to chase again
@@ -195,47 +236,6 @@ bool Challenge::Iterate()
         }
       }
     } 
-    else {
-      std::ostringstream message;
-      message << "contact = " << contact["NAME"];
-      std::cout << "trying to avoid: " << contact["NAME"] << std::endl;
-      if (contact["MODE"] == "MODE@ACTIVE:CHASING") {
-        bool isAvoiding = false;
-        _prevMode = _mode;
-
-        if (!isAvoiding) {
-          Notify("AVOID_UPDATES", message.str());
-          Notify("AVOID", "true");
-          Notify("LOITER1", "false");
-          Notify("LOITER2", "false");
-          isAvoiding = true;
-        }
-      }
-      else {
-        // shark ended chase behavior
-        // how to get previous mode the vehicle was in and then change it back
-        if (_prevMode == "MODE@ACTIVE:CHASING") {
-          // if it was chasing a whale, fish, or treasure resume chase bhv
-          Notify("AVOID", "false");
-          Notify("CLOSE", "true");
-          Notify("LOITER1", "false");
-          Notify("LOITER2", "false");
-        }
-        else if (_prevMode == "MODE@ACTIVE:LOITERING1") {
-          // switch back to Loitering 1
-          Notify("AVOID", "false");
-          Notify("CLOSE", "false");
-          Notify("LOITER1", "true");
-          Notify("LOITER2", "false");
-        }
-        else {
-          // last case should only be if previous mode was Loitering 2
-          Notify("AVOID", "false");
-          Notify("LOITER1", "false");
-          Notify("LOITER2", "true");
-        }
-      }
-    }
   }
   //
   //---------------------------------------------------
