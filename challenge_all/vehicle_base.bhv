@@ -119,6 +119,7 @@ Behavior = BHV_Waypoint
 
 
 //-------------------------------------------
+/*
 Behavior = BHV_CutRange
 {
         // General Behavior Parameters
@@ -155,6 +156,41 @@ Behavior = BHV_CutRange
         pursueflag = PURSUIT=true
         giveupflag = PURSUIT=false
 }
+*/
+
+ Behavior = BHV_Trail
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = trail_                // example
+   pwt          = 5001                  // default
+   condition    = MODE==CHASING
+   condition    = CLOSE = true
+   endflag      = CLOSE = false  
+   updates      = TRAIL_INFO            // example
+   templating   = spawn                 // example
+
+
+   // General Contact Behavior Parameters
+   // -----------------------------------
+             contact = to-be-set        // example
+               decay = 15,30            // default (seconds)
+         extrapolate = true             // default
+    on_no_contact_ok = true             // default
+         time_on_leg = 60               // default (seconds)
+
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+                 nm_radius = 5         // default (meters)
+          no_alert_request = false      // default
+   post_trail_dist_on_idle = true       // default
+            pwt_outer_dist = 0          // default (meters)        
+                    radius = 5          // default (meters) 
+               trail_angle = 180        // default (degrees)
+          trail_angle_type = relative   // default (or absolute)             
+               trail_range = 1         // default (meters)
+ }
 
 Behavior = BHV_AvdColregsV19
  {
