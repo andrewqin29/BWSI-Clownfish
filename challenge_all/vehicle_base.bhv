@@ -225,6 +225,7 @@ Behavior = BHV_ConstantSpeed
           summitdelta = 0            // default
 }
 
+// THIS IS THE BEHAVIOR THAT CHANGES DEPTH
 Behavior = BHV_ConstantDepth
 {
    // General Behavior Parameters
@@ -238,7 +239,7 @@ Behavior = BHV_ConstantDepth
    // ------------------------------------
             basewidth = 0.2          // default
              duration = 100000            // default
-                depth = 0.0            // default
+                depth = 150            // default
    depth_mismatch_var = DEPTH_DIFF   // example
             peakwidth = 0            // default
           summitdelta = 0            // default

@@ -37,6 +37,9 @@ class Challenge : public CMOOSApp
 
   double _minChaseDist;
   double _maxChaseDist;
+  double _depth;
+
+
   std::string _mode;
   std::string _prevMode;
   

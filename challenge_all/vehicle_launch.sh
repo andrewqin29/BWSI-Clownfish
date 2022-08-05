@@ -25,12 +25,12 @@ AUV_PSHARE=("9201" "9202" "9203" "9204" "9205" "9206")
 INCLUDE=("#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos" "#include moos_plugs/plug_pChallenge.moos")
 RUN=("Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false" "Run = pChallenge @ NewConsole = false")
 
-START_POS=("x=1500,y=1500,speed=0,heading=0,depth=0" \
-"x=-1500,y=1500,speed=0,heading=0,depth=0"  \
-"x=-1500,y=-1500,speed=0,heading=0,depth=0" \
-"x=1500,y=-1500,speed=0,heading=0,depth=0" \
-"x=1500,y=750,speed=0,heading=0,depth=0" \
-"x=-691.0,y=900.0,speed=0,heading=0,depth=0") # -1500, 750
+START_POS=("x=1500,y=1500,speed=0,heading=0,depth=250" \
+"x=-1500,y=1500,speed=0,heading=0,depth=250"  \
+"x=-1500,y=-1500,speed=0,heading=0,depth=250" \
+"x=1500,y=-1500,speed=0,heading=0,depth=250" \
+"x=1500,y=750,speed=0,heading=0,depth=250" \
+"x=-1500,y=750,speed=0,heading=0,depth=250") # -1500, 750
 
 BLOCK_POS1=("startx=1400,starty=1400,x=800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
 "startx=-1400,starty=1400,x=-800,y=1125,height=550,width=1200,lane_width=400,rows=north-south" \
